@@ -1,8 +1,7 @@
 import torch
 from torch import nn
 
-# if vanishing gradients occur, use a bottleneck with 
-# residual connections, a la ResNet https://arxiv.org/pdf/1512.03385
+# if vanishing gradients occur, use residual connections a la ResNet https://arxiv.org/pdf/1512.03385
 
 class Simple_UNet(nn.Module):
     def __init__(self, embd_counts=[2**i for i in range(6,10)]) -> None:
@@ -35,7 +34,8 @@ class Simple_UNet(nn.Module):
 
         # upsample
         self.upsample = nn.ModuleList()
-        upsample_embed_counts = self.embd_counts[:-1:-1] # 256, 128, 64
+        upsample_embed_counts = self.embd_counts[2::-1] # 256, 128, 64
+        breakpoint()
         for embd_count in upsample_embed_counts:
             self.upsample.append(
                 nn.Sequential(
@@ -50,9 +50,13 @@ class Simple_UNet(nn.Module):
 
 
     def forward(self, x):
+        # residual connections here
         for layer in self.downsample:
             x = layer(x)
         x = self.bottleneck(x)
         for layer in self.upsample:
             x = layer(x)
         return self.output_layer(x)
+
+model = Simple_UNet()
+print(model)
