@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Probabilistic Equations Worksheet</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 20px;
+      }
+      .equation {
+        margin: 20px 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Learning to Write and Read Probabilistic Equations</h1>
+    <p>
+      This worksheet will guide you through the process of understanding and
+      writing probabilistic equations, with a focus on conditional Gaussians and
+      related concepts. Complete the exercises to reinforce your learning.
+    </p>
+
+    <h2>1. Basic Gaussian Distribution</h2>
+    <p>
+      A Gaussian distribution is defined by its mean <i>μ</i> and variance
+      <i>σ<sup>2</sup></i
+      >. The probability density function (pdf) of a Gaussian distribution is:
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)"
+        alt="Gaussian PDF"
+      />
+    </div>
+
+    <p>
+      <strong>Exercise 1:</strong> Write the Gaussian pdf for a distribution
+      with mean 0 and variance 1.
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x)=\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{x^2}{2}\right)"
+        alt="Gaussian PDF Example"
+      />
+    </div>
+
+    <h2>2. Multivariate Gaussian Distribution</h2>
+    <p>
+      A multivariate Gaussian distribution extends the univariate Gaussian to
+      multiple dimensions. It is defined by a mean vector <i>μ</i> and a
+      covariance matrix <i>Σ</i>.
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(\mathbf{x})=\frac{1}{(2\pi)^{k/2}|\boldsymbol{\Sigma}|^{1/2}}\exp\left(-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu})\right)"
+        alt="Multivariate Gaussian PDF"
+      />
+    </div>
+
+    <p>
+      <strong>Exercise 2:</strong> Write the multivariate Gaussian pdf for a
+      2-dimensional vector <i>𝒙</i> with mean vector
+      <i>μ = [0, 0]<sup>T</sup></i> and covariance matrix
+      <i>Σ = [[1, 0], [0, 1]]</i>.
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(\mathbf{x})=\frac{1}{2\pi}\exp\left(-\frac{1}{2}\mathbf{x}^T\mathbf{x}\right)"
+        alt="Multivariate Gaussian PDF Example"
+      />
+    </div>
+
+    <h2>3. Conditional Gaussian Distribution</h2>
+    <p>
+      The conditional Gaussian distribution
+      <i>p(𝒙<sub>t-1</sub> | 𝒙<sub>t</sub>, 𝒚)</i> involves the mean and
+      covariance depending on the conditioning variables
+      <i>𝒙<sub>t</sub></i> and <i>𝒚</i>.
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p_{\theta}(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{y})=\mathcal{N}(\mathbf{x}_{t-1};\mu_{\theta}(\mathbf{x}_t,t,\mathbf{y}),\Sigma_{\theta}(\mathbf{x}_t,t,\mathbf{y}))"
+        alt="Conditional Gaussian Distribution"
+      />
+    </div>
+
+    <p>
+      <strong>Exercise 3:</strong> Explain what each term in the conditional
+      Gaussian equation represents.
+    </p>
+    <ul>
+      <li>
+        <i>p<sub>θ</sub>(𝒙<sub>t-1</sub> | 𝒙<sub>t</sub>, 𝒚)</i>: The
+        conditional probability distribution of <i>𝒙<sub>t-1</sub></i> given
+        <i>𝒙<sub>t</sub></i> and <i>𝒚</i>, parameterized by <i>θ</i>.
+      </li>
+      <li>
+        <i
+          >𝒩(𝒙<sub>t-1</sub>; μ<sub>θ</sub>(𝒙<sub>t</sub>, t, 𝒚),
+          Σ<sub>θ</sub>(𝒙<sub>t</sub>, t, 𝒚))</i
+        >: Indicates that <i>𝒙<sub>t-1</sub></i> follows a Gaussian distribution
+        with mean <i>μ<sub>θ</sub>(𝒙<sub>t</sub>, t, 𝒚)</i> and covariance
+        <i>Σ<sub>θ</sub>(𝒙<sub>t</sub>, t, 𝒚)</i>.
+      </li>
+      <li>
+        <i>μ<sub>θ</sub>(𝒙<sub>t</sub>, t, 𝒚)</i>: The mean of the Gaussian,
+        which is a function of <i>𝒙<sub>t</sub></i
+        >, time <i>t</i>, and conditioning variable <i>𝒚</i>.
+      </li>
+      <li>
+        <i>Σ<sub>θ</sub>(𝒙<sub>t</sub>, t, 𝒚)</i>: The covariance matrix of the
+        Gaussian, also a function of <i>𝒙<sub>t</sub></i
+        >, time <i>t</i>, and <i>𝒚</i>.
+      </li>
+    </ul>
+
+    <h2>4. Integrating Out a Variable</h2>
+    <p>
+      To obtain the marginal distribution of a variable, we integrate out the
+      other variables. For example, to find <i>p(x<sub>0</sub> | y)</i>:
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x_0|y)=\int p(x_0,x_1|y)dx_1"
+        alt="Marginal Distribution"
+      />
+    </div>
+
+    <p>
+      <strong>Exercise 4:</strong> Given
+      <i
+        >p(x<sub>0</sub>, x<sub>1</sub> | y) = \(\frac{1}{2\pi\sigma^2}
+        \exp\left(-\frac{(x_0 - \mu_0)^2 + (x_1 -
+        \mu_1)^2}{2\sigma^2}\right)\)</i
+      >, find <i>p(x<sub>0</sub> | y)</i>.
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x_0|y)=\int_{-\infty}^{\infty}\frac{1}{2\pi\sigma^2}\exp\left(-\frac{(x_0-\mu_0)^2+(x_1-\mu_1)^2}{2\sigma^2}\right)dx_1"
+        alt="Integral Example 1"
+      />
+    </div>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x_0|y)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(x_0-\mu_0)^2}{2\sigma^2}\right)"
+        alt="Integral Example 2"
+      />
+    </div>
+
+    <h2>5. Practice Problems</h2>
+    <p>
+      <strong>Problem 1:</strong> Write the equation for the marginal
+      distribution <i>p(x<sub>0</sub>)</i> if
+      <i>p(x<sub>0</sub>, x<sub>1</sub>)</i> is a bivariate Gaussian with zero
+      mean and identity covariance matrix.
+    </p>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x_0,x_1)=\frac{1}{2\pi}\exp\left(-\frac{1}{2}(x_0^2+x_1^2)\right)"
+        alt="Bivariate Gaussian"
+      />
+    </div>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x_0)=\int_{-\infty}^{\infty}\frac{1}{2\pi}\exp\left(-\frac{1}{2}(x_0^2+x_1^2)\right)dx_1"
+        alt="Integral Bivariate Gaussian"
+      />
+    </div>
+    <div class="equation">
+      <img
+        src="https://latex.codecogs.com/png.image?\dpi{110} p(x_0)=\frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}x_0^2\right)"
+        alt="Marginal Distribution from Bivariate Gaussian"
+      />
+    </div>
+
+    <p>
+      <strong>Problem 2:</strong> Explain the meaning of the covariance matrix
+      <i>Σ</i> in the multivariate Gaussian distribution.
+    </p>
+    <p>
+      The covariance matrix <i>Σ</i> represents the variances and covariances of
+      the components of the multivariate Gaussian distribution. The diagonal
+      elements of <i>Σ</i> represent the variances of each individual component,
+      while the off-diagonal elements represent the covariances between pairs of
+      components. It determines the shape and orientation of the Gaussian
+      distribution in multidimensional space.
+    </p>
+
+    <p>
+      <strong>Problem 3:</strong> Given
+      <i
+        >p(x<sub>t-1</sub> | x<sub>t</sub>, y) = \(\mathcal{N}(x_{t-1}; \mu(x_t,
+        t, y), \Sigma(x_t, t, y))\)</i
+      >, describe what would happen if <i>Σ(x<sub>t</sub>, t, y)</i> were a
+      diagonal matrix.
+    </p>
+    <p>
+      If <i>Σ(x<sub>t</sub>, t, y)</i> were a diagonal matrix, it would indicate
+      that the components of <i>x<sub>t-1</sub></i> are conditionally
+      independent given <i>x<sub>t</sub></i> and <i>y</i>. Each component's
+      variance is determined independently, and there are no covariances between
+      different components. The Gaussian distribution would be aligned with the
+      coordinate axes.
+    </p>
+  </body>
+</html>
