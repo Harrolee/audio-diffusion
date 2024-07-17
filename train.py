@@ -11,5 +11,5 @@ model = Simple_UNet()
 
 def loss(model, x_0, t):
     noisy_sample, noise = forward_diffusion_sample(x_0, t, DEVICE)
-    y = model(noisy_sample, t) # need to revise model to understand timestamps
+    y = model(noisy_sample, t)
     return F.l1_loss(y, noise)

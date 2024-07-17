@@ -1,12 +1,50 @@
+import math
 import torch
 from torch import nn
 
 # if vanishing gradients occur, use residual connections a la ResNet https://arxiv.org/pdf/1512.03385
+class SinusoidalPositionalEmbedding(nn.Module):
+    def __init__(self, d_model, max_len=5000):
+        super(SinusoidalPositionalEmbedding, self).__init__()
+        
+        # Create a matrix of shape (max_len, d_model)
+        pe = torch.zeros(max_len, d_model)
+        
+        # Create a vector of positions
+        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        
+        # Create a vector of frequencies
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
+        
+        # Assign sine and cosine values to the matrix
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        
+        # Add a batch dimension
+        pe = pe.unsqueeze(0).transpose(0, 1)
+        
+        # Register the positional encoding as a buffer
+        self.register_buffer('pe', pe)
+
+    def forward(self, x):
+        # Add positional encoding to the input
+        return x + self.pe[:x.size(0), :]
+
 
 class Simple_UNet(nn.Module):
     def __init__(self, embd_counts=[2**i for i in range(6,10)]) -> None:
         super().__init__()
         self.embd_counts = embd_counts
+        timestamp_emb_dim = 32
+
+
+        # represent beta_t as a timestamp
+        self.timestamp_emb = nn.Sequential(
+            SinusoidalPositionalEmbedding(timestamp_emb_dim),
+            nn.Linear(timestamp_emb_dim, timestamp_emb_dim),
+            nn.ReLU(),
+        )
+
 
         # downsample
         self.downsample = nn.ModuleList()
@@ -49,8 +87,12 @@ class Simple_UNet(nn.Module):
         self.output_layer = nn.Conv1d(in_channels=self.embd_counts[0], out_channels=1, kernel_size=1)
 
 
-    def forward(self, x):
-        # residual connections here
+    def forward(self, x, timestamp):
+        # add residual connections here
+
+        # add timestamp awareness
+        t = self.timestamp_emb(timestamp)
+
         for layer in self.downsample:
             x = layer(x)
         x = self.bottleneck(x)
